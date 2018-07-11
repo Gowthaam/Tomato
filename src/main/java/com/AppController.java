@@ -5,8 +5,11 @@ import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.web.ErrorController;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,11 +26,15 @@ import com.repository.ItemRepository;
 import com.repository.OrderRepository;
 import com.repository.ReviewRepository;
 import com.repository.UsersRepository;
+
+import errorhandling.CustomException;
+
 import org.apache.log4j.Logger;
+import org.hibernate.exception.DataException;
 
 
 @Controller
-public class AppController 
+public class AppController implements ErrorController
 {
 @Autowired
 UsersRepository usersrepository;
@@ -40,8 +47,7 @@ OrderRepository orderrepository;
 @Autowired 
 ReviewRepository reviewrepository;
 public  Map<String,ArrayList<OrderDetails>> order = new HashMap<String,ArrayList<OrderDetails>>();
-@Value("${context}")
-String context;
+
 
 public static String hotelName = new String("");
 public static String username = new String("");
@@ -341,16 +347,28 @@ public ModelAndView register()
 }
 
 @RequestMapping(value="/register",method = RequestMethod.POST)
-public String addUser(@ModelAttribute("inp") Users inp , Model model)
+public String addUser(@ModelAttribute("inp") Users inp , Model model) 
 {
 	User user = new User();
+
+
+	if(inp.uname.length()>20||inp.password.length()>20)
+	{
+		CustomException ce = new CustomException();
+		ce.setMessage("UserName and password cannot be greater than 20 chars! ");
+		
+		throw ce;
+		}
+
 	user.setUname(inp.uname);
 	user.setPassword(inp.password);
 	System.out.println(inp.uname);
 	if(usersrepository.findByUname(inp.uname).isEmpty())
 	{
+		
 		if(usersrepository.save(user)!=null);
 		System.out.println("added to db!");
+		
 		return "login";
 	}
 	else
@@ -360,6 +378,15 @@ public String addUser(@ModelAttribute("inp") Users inp , Model model)
 	}
 	
 }
+@ExceptionHandler(CustomException.class)
+public String basicException(CustomException e,Model model) throws CustomException
+{
+CustomException ce = e;
+System.out.println("entered handler");
+model.addAttribute("error",ce.getMessage());
+return "error";
+}
+
 
 @RequestMapping("/login-failure")
 public String loginFail()
@@ -389,6 +416,21 @@ public String forgotReply(@ModelAttribute("inp") Users inp , Model model)
 	
 
 }
+
+@Override
+public String getErrorPath() {
+	System.out.println("set");
+	return "/error";
+}
+
+
+@RequestMapping("/error")
+public String error(Model model)
+{
+	model.addAttribute("error","You are Unauthorised to access the resource!");
+	return "error";
+}
+
 
 
 }
