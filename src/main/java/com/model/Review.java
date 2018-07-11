@@ -27,7 +27,9 @@ public class Review {
 	
 	
 	public Review()
-	{}
+	{
+		//for storing the ratings and reviews
+	}
 	
 	public int getId()
 	{

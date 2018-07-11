@@ -7,36 +7,34 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Component;
 
 import com.model.User;
 import com.repository.UsersRepository;
 
-import errorhandling.CustomException;
 
 import java.util.*;
 @Component
 public class CustomAuth implements AuthenticationProvider{
-public static String username = new String();
+  String username ;
 	
 @Autowired
 UsersRepository usersrepository;
 
 	@Override
-	public Authentication authenticate(Authentication auth) throws  AuthenticationException {
-		// TODO Auto-generated method stub
+	public Authentication authenticate(Authentication auth)  {
 		 username = auth.getName();
 		String pass = auth.getCredentials().toString();
-		String password=new String();
 		
-		if(usersrepository.findByUname(username).isEmpty()==false)
+		
+		if(!usersrepository.findByUname(username).isEmpty())
 		{
 			List<User> list = usersrepository.findByUname(username);	
-		for(User u:list)
+			String password=null;
+			for(User u:list)
 		 password = u.getPassword(); 
-		if(password.equals(pass))
-			return new UsernamePasswordAuthenticationToken(username,pass,Collections.EMPTY_LIST);
+		if(password!=null&&password.equals(pass))
+			return new UsernamePasswordAuthenticationToken(username,pass,Collections.emptyList());
 		else
 			throw new BadCredentialsException("authentication failed");
 		
@@ -47,7 +45,6 @@ UsersRepository usersrepository;
 
 	@Override
 	public boolean supports(Class<?> auth) {
-		// TODO Auto-generated method stub
 		return auth.equals(UsernamePasswordAuthenticationToken.class);
 	}
 	

@@ -17,7 +17,9 @@ public class Hotel {
 	private String location;
 	
 	public Hotel()
-	{}
+	{// class for getting all the hotels available in a location
+	}
+	
 	
 	
 	public String getHname()
@@ -34,7 +36,7 @@ public class Hotel {
 		return location;
 	}
 	
-	public void setLocation(Object password)
+	public void setLocation(Object location)
 	{
 		this.location=(String)location;
 	}

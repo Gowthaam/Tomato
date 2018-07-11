@@ -17,7 +17,9 @@ public class User {
 	private String password;
 	
 	public User()
-	{}
+	{
+		//for registring the users.
+	}
 	
 	
 	public String getUname()

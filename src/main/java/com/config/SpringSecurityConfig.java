@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @EnableWebSecurity
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter{
 
+	 static final String LOGIN="/login";
 	@Autowired 
 	CustomAuth custauth;
 	
@@ -32,18 +33,18 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter{
 		 http.httpBasic()
 	            .and()
 	            .authorizeRequests()
-	            .antMatchers("/login","/app-login","/login-failure","/register","/forgot-password").permitAll()
+	            .antMatchers(LOGIN,"/app-login","/login-failure","/register","/forgot-password").permitAll()
 	            .anyRequest().authenticated()
 	            .and()
 	            .formLogin()
-	            .loginPage("/login")
+	            .loginPage(LOGIN)
 	            //.loginProcessingUrl("/app-login")
 	           // .usernameParameter("username").passwordParameter("password")
 	            .defaultSuccessUrl("/")
 	            .failureUrl("/login-failure")
 	            .and()
 	            .logout().logoutUrl("/app-logout")
-	            .logoutSuccessUrl("/login");
+	            .logoutSuccessUrl(LOGIN);
                 
 	            
 	    }

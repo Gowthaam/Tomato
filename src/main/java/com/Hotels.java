@@ -2,9 +2,9 @@ package com;
 
 public class Hotels {
 
-	String id = new String();
-	String name = new String(); 
-	String location = new String();
+	String id ;
+	String name; 
+	String location ;
 	
 	public Hotels()
 	{}

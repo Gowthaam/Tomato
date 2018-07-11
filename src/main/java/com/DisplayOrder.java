@@ -2,20 +2,22 @@ package com;
 
 import java.util.*;
 
+import com.model.Order;
+
 public class DisplayOrder {
 
 	int orderid;
 	String hname;
 	int total;
-	ArrayList<OrderClone> items;
+	List<Order> items;
 	
 	public DisplayOrder()
 	{}
 	
-	public DisplayOrder(int orderid,ArrayList<OrderClone> items)
+	public DisplayOrder(int orderid,List<Order> items)
 	{
-		orderid=this.orderid;
-		items=this.items;
+		this.orderid=orderid;
+		this.items=items;
 	}
 	
 	public int getOrderid()
@@ -39,12 +41,12 @@ public class DisplayOrder {
 		this.hname=hname;
 	}
 	
-	public ArrayList<OrderClone> getItems()
+	public List<Order> getItems()
 	{
 		return items;
 	}
 	
-	public void setItems(ArrayList<OrderClone> items)
+	public void setItems(List<Order> items)
 	{
 		this.items=items;
 	}

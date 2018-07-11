@@ -33,7 +33,20 @@ public class Order {
 	
 	
 	public Order()
-	{}
+	{
+		//for Storing the orders
+	}
+	
+	public Order(int orderid,String uname,String hname,String item,int price,int quantity,int total)
+	{
+		this.orderid=orderid;
+		this.uname=uname;
+		this.hname=hname;
+		this.item=item;
+		this.price=price;
+		this.quantity=quantity;
+		this.total=total;
+	}
 	
 	public int getId()
 	{

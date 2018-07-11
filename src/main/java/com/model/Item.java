@@ -22,7 +22,9 @@ public class Item {
 	
 	
 	public Item()
-	{}
+	{
+		//For getting the menu of a hotel
+	}
 	
 	public int getId()
 	{

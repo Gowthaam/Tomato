@@ -1,12 +1,11 @@
 package errorhandling;
-import org.hibernate.exception.DataException;
 public class CustomException extends RuntimeException {
 
 	int status;
 	String message;
 	public CustomException()
 	{
-		
+		//to create custom exceptions
 	}
 	
 	public void setStatus(int status)

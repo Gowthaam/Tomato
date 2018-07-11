@@ -1,0 +1,6 @@
+projectKey=Tomato:Tomato
+serverUrl=http://localhost:9000
+serverVersion=6.7.4.38452
+dashboardUrl=http://localhost:9000/dashboard/index/Tomato:Tomato
+ceTaskId=AWSK1O2gHLP7AHVGDaFV
+ceTaskUrl=http://localhost:9000/api/ce/task?id=AWSK1O2gHLP7AHVGDaFV
