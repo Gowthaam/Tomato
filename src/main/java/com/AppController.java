@@ -123,9 +123,55 @@ return "menu";}
 
 
 @RequestMapping(value="/addItem",method=RequestMethod.POST)
-public String menu(@ModelAttribute("inp") OrderDetails inp,Model model)
+public String addItem(@ModelAttribute("inp") OrderDetails inp)
 {
+/*
+	if(inp.quantity>0)
+	{
+	int flag=0;
+	if(order.get(hotelName)==null)
+	{	
+		ArrayList<OrderDetails> al=new ArrayList<>();
+		al.add(new OrderDetails(inp.item,inp.quantity,inp.price));
+		order.put(hotelName,al);
+	}
+		else
+	{
+		for(OrderDetails x : order.get(hotelName))
+			if(x.item.equals(inp.item))
+			{
+				x.quantity+=inp.quantity;
+				flag=1;
+			}
+	
+		if(flag==0)
+			{
+			order.get(hotelName).add(new OrderDetails(inp.item,inp.quantity,inp.price));
+			}
+	}
+	
+	}
 
+ 
+
+int totalBill=0;
+ArrayList<OrderDetails> temp1 = new ArrayList<>();
+
+	if(order.get(hotelName)!=null)
+	for(OrderDetails y : order.get(hotelName))
+		{
+		temp1.add(new OrderDetails(y.getItem(),y.getQuantity(),y.quantity*y.getPrice()));
+		totalBill+=y.quantity*y.getPrice();
+		}
+
+bill=totalBill;*/
+addItemLogic(inp);
+return "redirect:/menu"; 
+
+}
+
+public void addItemLogic(OrderDetails inp)
+{
 	if(inp.quantity>0)
 	{
 	int flag=0;
@@ -165,15 +211,14 @@ ArrayList<OrderDetails> temp1 = new ArrayList<>();
 		}
 
 bill=totalBill;
-
-return "redirect:/menu"; 
-
+	
 }
+
 
 @RequestMapping(value="removeItem",method=RequestMethod.POST)
 public String removeItem(@ModelAttribute("inp") OrderDetails inp,Model model)
 {
-	for(OrderDetails x : order.get(hotelName))
+	/*for(OrderDetails x : order.get(hotelName))
 			if(x.getItem().equals(inp.item))
 			{
 				order.get(hotelName).remove(x);
@@ -189,8 +234,31 @@ public String removeItem(@ModelAttribute("inp") OrderDetails inp,Model model)
 			totalBill+=y.quantity*y.getPrice();
 			}
 
-		bill=totalBill;
+		bill=totalBill;*/
+	removeItemLogic(inp);
 	return "redirect:/menu"; 
+}
+
+public void removeItemLogic(OrderDetails inp)
+{
+	for(OrderDetails x : order.get(hotelName))
+		if(x.getItem().equals(inp.item))
+		{
+			order.get(hotelName).remove(x);
+			break;
+		}
+int totalBill=0;
+ArrayList<OrderDetails> temp1 = new ArrayList<>();
+
+	if(order.get(hotelName)!=null)
+	for(OrderDetails y : order.get(hotelName))
+		{
+		temp1.add(new OrderDetails(y.getItem(),y.getQuantity(),y.quantity*y.getPrice()));
+		totalBill+=y.quantity*y.getPrice();
+		}
+
+	bill=totalBill;
+
 }
 
 @RequestMapping(value="/checkout",method = RequestMethod.POST)

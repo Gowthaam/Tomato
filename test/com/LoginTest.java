@@ -15,7 +15,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.web.FilterChainProxy;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -40,13 +39,6 @@ public class LoginTest extends TestApplication{
 		//mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 	}
 
-	@Test
-	public void loginPageLoading() throws Exception 
-	{
-		mockMvc.perform(get("/login")).andExpect(status().isOk());
-				
-
-	}
 	
 	@Test
 	public void registerPageLoading() throws Exception 
@@ -77,21 +69,63 @@ public class LoginTest extends TestApplication{
 	    		 mockMvc.perform(requestBuilder)
 	            .andDo(print())
 	            .andExpect(redirectedUrl("/login-failure"));
-	    		 
-	            
 	}
 	@Test
 	public void home() throws Exception {
-		mockMvc.perform(get("/home")).andExpect(redirectedUrl("/welcome"));	
+		mockMvc.perform(get("/home")).andExpect(redirectedUrl("/users/user"));	
 	    		 
-	            
 	}
 	
 	@Test
-	public void unauthorizedAccess() throws Exception {
-	   
-	    
-		mockMvc.perform(get("http://localhost:8080/menu")).andExpect(status().isUnauthorized());
-		
+	public void selectedLocation() throws Exception {
+	    RequestBuilder requestBuilder = get("http://localhost:8080/hotels")
+	            .param("name", "hitech-city");
+	    		 mockMvc.perform(requestBuilder)
+	            .andDo(print())
+	            .andExpect(status().is2xxSuccessful());
 	}
+
+	@Test
+	public void selectedHotel() throws Exception {
+	    RequestBuilder requestBuilder = get("http://localhost:8080/menu")
+	            .param("name", "ohris");
+	    		 mockMvc.perform(requestBuilder)
+	            .andDo(print())
+	            .andExpect(status().is2xxSuccessful());
+	}
+
+	
+	@Test
+	public void addItemTest() throws Exception {
+	    RequestBuilder requestBuilder = post("http://localhost:8080/addItem")
+	            .param("item", "pizza")
+	            .param("price", "60");
+	    		 mockMvc.perform(requestBuilder)
+	            .andDo(print())
+	            .andExpect(redirectedUrl("/menu"));
+	}
+	
+	@Test
+	public void submitRatingTest() throws Exception {
+	    RequestBuilder requestBuilder = post("http://localhost:8080/submit-rating")
+	            .param("rating", "5")
+	            .param("review", "great service");
+	    		 mockMvc.perform(requestBuilder)
+	            .andDo(print())
+	            .andExpect(redirectedUrl("/submit-rating"));
+	}
+	
+	@Test
+	public void getReviews() throws Exception {
+		mockMvc.perform(get("/view-reviews")).andExpect(status().isOk());	
+	}
+
+	@Test
+	public void errorMapTest() throws Exception {
+		mockMvc.perform(get("/error")).andExpect(status().isOk());	
+	}
+	
+	
+	
+	
 }

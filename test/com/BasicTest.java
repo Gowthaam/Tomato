@@ -1,6 +1,9 @@
 package com;
 
 import static org.junit.Assert.assertEquals;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 
 import org.junit.Before;
 import org.junit.Test;
@@ -27,11 +30,15 @@ public class BasicTest extends TestApplication {
 	@Autowired
 	UsersRepository usersrepository;
 	
+	AppController app;
+	
 	@Before
 public void setup() {
 mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).addFilter(springSecurityFilterChain)
             .build();
 logic = new Logic();
+app = new AppController();
+app.hotelName="ohris";
 //mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 }
 
@@ -62,6 +69,75 @@ public void addUserTestFail()
 }
 
 
+@Test	
+public void addItemBillTest()
+{
+	OrderDetails od = new OrderDetails();
+	od.setItem("pizza");
+	od.setPrice(200);
+	od.setQuantity(5);
+	app.addItemLogic(od);
+	assertEquals(app.bill,1000);
+}
+
+@Test	
+public void removeItemBillTest()
+{
+	OrderDetails od = new OrderDetails();
+	od.setItem("pizza");
+	od.setPrice(200);
+	od.setQuantity(5);
+	app.addItemLogic(od);
+	od.setQuantity(2);
+	app.removeItemLogic(od);
+	assertEquals(app.bill,0);
+}
+
+
+@Test	
+public void addItemCartTest()
+{
+	OrderDetails od = new OrderDetails();
+	od.setItem("pizza");
+	od.setPrice(200);
+	od.setQuantity(5);
+	app.addItemLogic(od);
+
+	for(OrderDetails o : app.order.get("ohris") )
+		{assertEquals(o.item,"pizza");
+		assertEquals(o.quantity,5);
+		assertEquals(o.price,200);
+		}
+		
+}
+
+@Test	
+public void removeItemCartTest()
+{
+	OrderDetails od = new OrderDetails();
+	od.setItem("pizza");
+	od.setPrice(200);
+	od.setQuantity(5);
+	app.addItemLogic(od);
+	app.removeItemLogic(od);
+	assertEquals(app.order.get("ohris").isEmpty(),true);	
+}
+
+@Test
+public void unauthorizedAccess() throws Exception {
+    
+	mockMvc.perform(get("http://localhost:8080/menu")).andExpect(status().isUnauthorized());
+	
+}
+
+
+@Test
+public void loginPageLoading() throws Exception 
+{
+	mockMvc.perform(get("/login")).andExpect(status().isOk());
+			
+
+}
 
 }
 
