@@ -125,46 +125,6 @@ return "menu";}
 @RequestMapping(value="/addItem",method=RequestMethod.POST)
 public String addItem(@ModelAttribute("inp") OrderDetails inp)
 {
-/*
-	if(inp.quantity>0)
-	{
-	int flag=0;
-	if(order.get(hotelName)==null)
-	{	
-		ArrayList<OrderDetails> al=new ArrayList<>();
-		al.add(new OrderDetails(inp.item,inp.quantity,inp.price));
-		order.put(hotelName,al);
-	}
-		else
-	{
-		for(OrderDetails x : order.get(hotelName))
-			if(x.item.equals(inp.item))
-			{
-				x.quantity+=inp.quantity;
-				flag=1;
-			}
-	
-		if(flag==0)
-			{
-			order.get(hotelName).add(new OrderDetails(inp.item,inp.quantity,inp.price));
-			}
-	}
-	
-	}
-
- 
-
-int totalBill=0;
-ArrayList<OrderDetails> temp1 = new ArrayList<>();
-
-	if(order.get(hotelName)!=null)
-	for(OrderDetails y : order.get(hotelName))
-		{
-		temp1.add(new OrderDetails(y.getItem(),y.getQuantity(),y.quantity*y.getPrice()));
-		totalBill+=y.quantity*y.getPrice();
-		}
-
-bill=totalBill;*/
 addItemLogic(inp);
 return "redirect:/menu"; 
 
@@ -218,23 +178,6 @@ bill=totalBill;
 @RequestMapping(value="removeItem",method=RequestMethod.POST)
 public String removeItem(@ModelAttribute("inp") OrderDetails inp,Model model)
 {
-	/*for(OrderDetails x : order.get(hotelName))
-			if(x.getItem().equals(inp.item))
-			{
-				order.get(hotelName).remove(x);
-				break;
-			}
-	int totalBill=0;
-	ArrayList<OrderDetails> temp1 = new ArrayList<>();
-
-		if(order.get(hotelName)!=null)
-		for(OrderDetails y : order.get(hotelName))
-			{
-			temp1.add(new OrderDetails(y.getItem(),y.getQuantity(),y.quantity*y.getPrice()));
-			totalBill+=y.quantity*y.getPrice();
-			}
-
-		bill=totalBill;*/
 	removeItemLogic(inp);
 	return "redirect:/menu"; 
 }
@@ -393,22 +336,7 @@ public String addUser(@ModelAttribute("inp") User inp , Model model)
 		
 		throw ce;
 		}
-/*	User user = new User();
-	user.setUname(inp.getUname());
-	user.setPassword(inp.getPassword());
-	if(usersrepository.findByUname(inp.getUname()).isEmpty())
-	{
-		
-		usersrepository.save(user);		
-		return "login";
-	}
-	else
-	{
-		model.addAttribute(ERROR,  "Invalid credentials or UserName is already taken! please choose another one.");
-		return "register";
-	}
-	*/
-		
+
 		if(logic.addUser(inp, usersrepository).equals("login"))
 				{
 			return "login";
@@ -442,18 +370,7 @@ return "forgot";
 
 @RequestMapping(value="/forgot-password",method = RequestMethod.POST)
 public String forgotReply(@ModelAttribute("inp") User inp , Model model)
-{/*
-	if(usersrepository.findByUname(inp.getUname()).isEmpty())
-		{
-		model.addAttribute("answer",  "Username not found ! Please Register");
-		return "forgotreply";
-		}
-	else
-		{
-		model.addAttribute("answer",  "Hi "+inp.getUname().toUpperCase()+"! Password has been sent to your registered Mail.");
-		return "forgotreply";
-		}	
-	*/
+{
 	
 	model.addAttribute("answer",logic.forgetReply(inp,usersrepository));
 	return "forgotreply";
