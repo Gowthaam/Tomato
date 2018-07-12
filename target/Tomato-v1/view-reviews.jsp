@@ -43,7 +43,7 @@ h1,h2,h3,h4,h5,h6 {
 
 <div>
 <br /><br /><br />
-<form action="/Tomato-v1/menu">
+<form action="/Tomato-v1/menu" method="post">
 <p><button class="w3-button w3-light-grey w3-section" type="submit"> BACK </button></p>
 </form>
 
