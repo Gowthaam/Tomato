@@ -1,5 +1,7 @@
 package com;
 
+import static org.junit.Assert.fail;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.testSecurityContext;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -13,11 +15,15 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.web.FilterChainProxy;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+import org.springframework.security.test.context.support.WithMockUser;
 
+
+@WithMockUser
 public class LoginTest extends TestApplication{
 	@Autowired
 	private WebApplicationContext webApplicationContext;
@@ -29,8 +35,9 @@ public class LoginTest extends TestApplication{
 
 	@Before
 	public void setup() {
-		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).addFilter(springSecurityFilterChain)
-                .build();
+	mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).addFilter(springSecurityFilterChain)
+			 .defaultRequest(get("/").with(testSecurityContext())).build();
+		//mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 	}
 
 	@Test
@@ -70,6 +77,13 @@ public class LoginTest extends TestApplication{
 	    		 mockMvc.perform(requestBuilder)
 	            .andDo(print())
 	            .andExpect(redirectedUrl("/login-failure"));
+	    		 
+	            
+	}
+	@Test
+	public void home() throws Exception {
+		mockMvc.perform(get("/home")).andExpect(redirectedUrl("/welcome"));	
+	    		 
 	            
 	}
 	

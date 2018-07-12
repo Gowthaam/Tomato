@@ -43,7 +43,8 @@ OrderRepository orderrepository;
 ReviewRepository reviewrepository;
  Map<String,ArrayList<OrderDetails>> order = new HashMap<>();
 
-
+Logic logic = new Logic();
+ 
   String hotelName ;
   String username ;
   int orderid;
@@ -315,8 +316,7 @@ public ModelAndView register()
 @RequestMapping(value="/register",method = RequestMethod.POST)
 public String addUser(@ModelAttribute("inp") User inp , Model model) 
 {
-	User user = new User();
-
+	
 
 	if(inp.getUname().length()>20||inp.getPassword().length()>20)
 	{
@@ -325,7 +325,7 @@ public String addUser(@ModelAttribute("inp") User inp , Model model)
 		
 		throw ce;
 		}
-
+/*	User user = new User();
 	user.setUname(inp.getUname());
 	user.setPassword(inp.getPassword());
 	if(usersrepository.findByUname(inp.getUname()).isEmpty())
@@ -339,7 +339,17 @@ public String addUser(@ModelAttribute("inp") User inp , Model model)
 		model.addAttribute(ERROR,  "Invalid credentials or UserName is already taken! please choose another one.");
 		return "register";
 	}
-	
+	*/
+		
+		if(logic.addUser(inp, usersrepository).equals("login"))
+				{
+			return "login";
+				}
+		else
+		{
+			model.addAttribute(ERROR,  "Invalid credentials or UserName is already taken! please choose another one.");
+			return "register";
+		}
 }
 @ExceptionHandler(CustomException.class)
 public String basicException(CustomException e,Model model) 
@@ -364,7 +374,7 @@ return "forgot";
 
 @RequestMapping(value="/forgot-password",method = RequestMethod.POST)
 public String forgotReply(@ModelAttribute("inp") User inp , Model model)
-{
+{/*
 	if(usersrepository.findByUname(inp.getUname()).isEmpty())
 		{
 		model.addAttribute("answer",  "Username not found ! Please Register");
@@ -375,7 +385,10 @@ public String forgotReply(@ModelAttribute("inp") User inp , Model model)
 		model.addAttribute("answer",  "Hi "+inp.getUname().toUpperCase()+"! Password has been sent to your registered Mail.");
 		return "forgotreply";
 		}	
+	*/
 	
+	model.addAttribute("answer",logic.forgetReply(inp,usersrepository));
+	return "forgotreply";
 
 }
 
@@ -391,8 +404,5 @@ public String error(Model model)
 	model.addAttribute(ERROR,"You are Unauthorised to access the resource!");
 	return ERROR;
 }
-
-
-
 }
 
