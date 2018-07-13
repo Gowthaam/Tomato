@@ -4,8 +4,8 @@ This is a webapplication that provides user with the functionalities to order th
 
 PREREQUISITES:
 
-Java JRE 
-Tomcat
+Java JRE, 
+Tomcat,
 MySQL database. 
 
 INSTALLING :
