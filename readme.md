@@ -10,10 +10,15 @@ MySQL database.
 
 INSTALLING :
 
-If there exist any tables by the name 'users','hotels','items','orders','reviews',
-please delete them using the command :
+start the mysql service by using the command :
 
-drop table < name of the table >;
+mysql -u root -p 
+
+Now Enter your MySQL password.
+
+Now Run the following command :
+
+create database if not exists project; 
 
 Then copy the Tomato-v1.war file from the Target folder of the project and place it in the webapps folder of the Tomcat residing on your system.
 Now you can start using the webapp from the your tomcat.
