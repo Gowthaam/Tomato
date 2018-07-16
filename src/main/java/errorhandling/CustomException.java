@@ -1,4 +1,9 @@
 package errorhandling;
+/**
+ * This class is used to throw custom exceptions by adding status and message to it
+ * @author gowtham
+ *
+ */
 public class CustomException extends RuntimeException {
 
 	int status;

@@ -18,7 +18,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 
 
 @WithMockUser
-public class LoginTest extends TestApplication{
+public class ControllerTest extends TestApplication{
 	@Autowired
 	private WebApplicationContext webApplicationContext;
 	

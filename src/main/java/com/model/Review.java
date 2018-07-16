@@ -15,15 +15,15 @@ public class Review {
 	@Id
 	@Column(name="id")
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private int id;
+	 int id;
 	@Column(name="uname")
-	private String uname;
+	 String uname;
 	@Column(name="hname")
-	private String hname;
+	 String hname;
 	@Column(name="rating")
-	private int rating;
+	 int rating;
 	@Column(name="review")
-	private String review;
+	 String review;
 	
 	
 	public Review()
