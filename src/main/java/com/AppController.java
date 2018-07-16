@@ -199,7 +199,6 @@ ArrayList<OrderDetails> temp1 = new ArrayList<>();
 		temp1.add(new OrderDetails(y.getItem(),y.getQuantity(),y.quantity*y.getPrice()));
 		totalBill+=y.quantity*y.getPrice();
 		}
-
 	bill=totalBill;
 
 }
