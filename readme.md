@@ -16,6 +16,18 @@ mysql -u root -p
 
 Now Enter your MySQL password.
 
+Create a new user using the command :
+
+grant all privileges on  * . * to 'gowtham'@'localhost' identified by 'gowtham';
+
+Now quit MySQL using 'quit' command.
+
+Now log into user using the command :
+
+mysql -u gowtham -p
+
+Password : gowtham
+
 Now Run the following command :
 
 create database if not exists project; 
