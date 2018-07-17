@@ -14,6 +14,11 @@ import com.repository.UsersRepository;
 
 
 import java.util.*;
+/**
+ * This class is used to define the custom authentication of the user. 
+ * @author gowtham
+ *
+ */
 @Component
 public class CustomAuth implements AuthenticationProvider{
   String username ;
@@ -21,6 +26,10 @@ public class CustomAuth implements AuthenticationProvider{
 @Autowired
 UsersRepository usersrepository;
 
+/**
+ *This method takes the credentials entered by the user and compares them with the
+ *details in the user database for generating the Authentication token. 
+ */
 	@Override
 	public Authentication authenticate(Authentication auth)  {
 		 username = auth.getName();

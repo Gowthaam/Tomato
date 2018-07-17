@@ -20,7 +20,7 @@ public class RefactoredImplementation {
  * @param usersrepository, It access the users table in database.
  * @return , resets password if user exists else asks user to register.
  */
-public String forgetPasswordReplyImplementation(User inp,UsersRepository usersrepository)
+public String forgetPasswordResponseImplementation(User inp,UsersRepository usersrepository)
 { 
 	List<User> l= usersrepository.findByUname(inp.getUname());
 	System.out.println(l.size());

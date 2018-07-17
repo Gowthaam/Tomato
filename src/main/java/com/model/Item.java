@@ -5,6 +5,12 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+/**
+ * This entity class is model for the items table that has list of all the food
+ * items available in the application,their restaurant, and price.
+ * @author gowtham
+ *
+ */
 
 @Entity
 @Table(name="items")

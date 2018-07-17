@@ -5,7 +5,12 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-
+/**
+ * This entity class is used as a model for the database table consisting of all the
+ * hotels and their respective locations.
+ * @author gowtham
+ *
+ */
 @Entity
 @Table(name="hotels")
 public class Hotel {

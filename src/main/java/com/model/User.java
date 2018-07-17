@@ -5,6 +5,12 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+/**
+ * This entity class is a model for users table that consists of all the users and
+ * their passwords.
+ * @author gowtham
+ *
+ */
 @Entity
 @Table(name="users")
 public class User {

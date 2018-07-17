@@ -14,6 +14,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.model.User;
+import com.jspmodel.HotelJSP;
+import com.jspmodel.LocationJSP;
+import com.jspmodel.OrderDetailsJSP;
+import com.jspmodel.OrderJSP;
+import com.jspmodel.RatingJSP;
 import com.model.Order;
 import com.model.Review;
 import com.repository.HotelRepository;
@@ -48,7 +53,7 @@ ReviewRepository reviewrepository;
  * It's used to maintain the user's cart in a session by mapping the name of the hotel
  * to the list of items added to the cart by the user.
  */
-Map<String,ArrayList<OrderDetails>> order = new HashMap<>();
+Map<String,ArrayList<OrderDetailsJSP>> order = new HashMap<>();
 
 RefactoredImplementation refImpl = new RefactoredImplementation();
  
@@ -105,12 +110,12 @@ return "home";
  * @return, it returns a JSP page consisting of all the hotels in the selected Location.
  */
 @RequestMapping(value="/hotels",method=RequestMethod.GET)
-public String getHotels(@ModelAttribute("inp") Locations inp,Model model)
+public String getHotels(@ModelAttribute("inp") LocationJSP inp,Model model)
 {	
-	logger.info("Location"+inp.name+" Selected");
+	logger.info("Location"+inp.getName()+" Selected");
 
-	model.addAttribute("place", inp.name);
-	model.addAttribute("hotels",hotelrepository.findByLocation(inp.name));
+	model.addAttribute("place", inp.getName());
+	model.addAttribute("hotels",hotelrepository.findByLocation(inp.getName()));
 	return "hotels";	
 }
 
@@ -121,22 +126,22 @@ public String getHotels(@ModelAttribute("inp") Locations inp,Model model)
  * @return , it returns a JSP page consisting of the menu in the selected hotel.
  */
 @RequestMapping(value="/menu",method= {RequestMethod.POST,RequestMethod.GET})
-public String getMenu(@ModelAttribute("inp") Hotels inp,Model model)
+public String getMenu(@ModelAttribute("inp") HotelJSP inp,Model model)
 {
-if(inp.name!=null) {
-hotelName=inp.name; }	
+if(inp.getName()!=null) {
+hotelName=inp.getName(); }	
 logger.info("hotel: "+hotelName+" Selected");
 
 model.addAttribute("place",hotelName);
 model.addAttribute("menu",itemrepository.findByHname(hotelName));
 
 int totalBill=0;
-ArrayList<OrderDetails> temp1 = new ArrayList<>();
+ArrayList<OrderDetailsJSP> temp1 = new ArrayList<>();
 
 	if(order.get(hotelName)!=null)
-	for(OrderDetails y : order.get(hotelName))
+	for(OrderDetailsJSP y : order.get(hotelName))
 		{
-		temp1.add(new OrderDetails(y.getItem(),y.getQuantity(),y.quantity*y.getPrice()));
+		temp1.add(new OrderDetailsJSP(y.getItem(),y.getQuantity(),y.quantity*y.getPrice()));
 		totalBill+=y.quantity*y.getPrice();
 		}
 
@@ -154,7 +159,7 @@ return "menu";}
  * @return , It redirects to menu page after adding item to the cart.
  */
 @RequestMapping(value="/addItem",method=RequestMethod.POST)
-public String addItem(@ModelAttribute("inp") OrderDetails inp)
+public String addItem(@ModelAttribute("inp") OrderDetailsJSP inp)
 {
 addItemImplementation(inp);
 return "redirect:/menu"; 
@@ -166,20 +171,20 @@ return "redirect:/menu";
  * @param inp , It takes the OrderDetails from the addItem method.
  */
 
-public void addItemImplementation(OrderDetails inp)
+public void addItemImplementation(OrderDetailsJSP inp)
 {
 	if(inp.quantity>0)
 	{
 	int flag=0;
 	if(order.get(hotelName)==null)
 	{	
-		ArrayList<OrderDetails> al=new ArrayList<>();
-		al.add(new OrderDetails(inp.item,inp.quantity,inp.price));
+		ArrayList<OrderDetailsJSP> al=new ArrayList<>();
+		al.add(new OrderDetailsJSP(inp.item,inp.quantity,inp.price));
 		order.put(hotelName,al);
 	}
 		else
 	{
-		for(OrderDetails x : order.get(hotelName))
+		for(OrderDetailsJSP x : order.get(hotelName))
 			if(x.item.equals(inp.item))
 			{
 				x.quantity+=inp.quantity;
@@ -188,7 +193,7 @@ public void addItemImplementation(OrderDetails inp)
 	
 		if(flag==0)
 			{
-			order.get(hotelName).add(new OrderDetails(inp.item,inp.quantity,inp.price));
+			order.get(hotelName).add(new OrderDetailsJSP(inp.item,inp.quantity,inp.price));
 			}
 	}
 	
@@ -197,12 +202,12 @@ public void addItemImplementation(OrderDetails inp)
  
 
 int totalBill=0;
-ArrayList<OrderDetails> temp1 = new ArrayList<>();
+ArrayList<OrderDetailsJSP> temp1 = new ArrayList<>();
 
 	if(order.get(hotelName)!=null)
-	for(OrderDetails y : order.get(hotelName))
+	for(OrderDetailsJSP y : order.get(hotelName))
 		{
-		temp1.add(new OrderDetails(y.getItem(),y.getQuantity(),y.quantity*y.getPrice()));
+		temp1.add(new OrderDetailsJSP(y.getItem(),y.getQuantity(),y.quantity*y.getPrice()));
 		totalBill+=y.quantity*y.getPrice();
 		}
 
@@ -217,7 +222,7 @@ bill=totalBill;
  * @return, It redirects to the menu page after removing the selected item.
  */
 @RequestMapping(value="removeItem",method=RequestMethod.POST)
-public String deleteItem(@ModelAttribute("inp") OrderDetails inp)
+public String deleteItem(@ModelAttribute("inp") OrderDetailsJSP inp)
 {
 	deleteItemImplementation(inp);
 	return "redirect:/menu"; 
@@ -227,22 +232,22 @@ public String deleteItem(@ModelAttribute("inp") OrderDetails inp)
  * It consists of the Business Logic for removing items from the Cart.
  * @param inp , it takes the OrderDetails from the removeItem method.
  */
-public void deleteItemImplementation(OrderDetails inp)
+public void deleteItemImplementation(OrderDetailsJSP inp)
 {
-	for(OrderDetails x : order.get(hotelName))
+	for(OrderDetailsJSP x : order.get(hotelName))
 		if(x.getItem().equals(inp.item))
 		{
 			order.get(hotelName).remove(x);
 			break;
 		}
 int totalBill=0;
-ArrayList<OrderDetails> temp1 = new ArrayList<>();
+ArrayList<OrderDetailsJSP> temp1 = new ArrayList<>();
 
 	if(order.get(hotelName)!=null)
-	for(OrderDetails y : order.get(hotelName))
+	for(OrderDetailsJSP y : order.get(hotelName))
 		{
-		temp1.add(new OrderDetails(y.getItem(),y.getQuantity(),y.quantity*y.getPrice()));
-		totalBill+=y.quantity*y.getPrice();
+		temp1.add(new OrderDetailsJSP(y.getItem(),y.getQuantity(),y.quantity*y.getPrice()));
+		totalBill+=y.getQuantity()*y.getPrice();
 		}
 	bill=totalBill;
 
@@ -261,7 +266,7 @@ Random rand = new Random();
  orderid=rand.nextInt(1000);
 while(!orderrepository.findByOrderid(orderid).isEmpty())
 {	orderid=rand.nextInt(1000);}
-	for(OrderDetails x : order.get(hotelName))
+	for(OrderDetailsJSP x : order.get(hotelName))
 {
 	Order temp = new Order();
 	temp.setOrderid(orderid);
@@ -296,7 +301,7 @@ return "checkout";
  * @return , it redirects the user to submit-rating page.
  */
 @RequestMapping(value="/submit-rating",method=RequestMethod.POST)
-public String addReview(@ModelAttribute("inp") Rating inp)
+public String addReview(@ModelAttribute("inp") RatingJSP inp)
 {
 	Review r = new Review();
 	r.setHname(hotelName);
@@ -362,13 +367,13 @@ public String getOrders(Model model)
 	}
 	
 	
-	ArrayList<DisplayOrder> disp = new ArrayList<>();
+	ArrayList<OrderJSP> disp = new ArrayList<>();
 	Set<Integer> keys = tempmap.keySet();
 
 	for(int i : keys)
 	{
 		
-		DisplayOrder tempo=new DisplayOrder();
+		OrderJSP tempo=new OrderJSP();
 		tempo.orderid=i;
 		tempo.items=new ArrayList<Order>();
 		for(Order e : tempmap.get(i))
@@ -474,10 +479,10 @@ return "forgot";
  * @return , it returns forgotreply JSP page.
  */
 @RequestMapping(value="/forgot-password",method = RequestMethod.POST)
-public String forgotPasswordReply(@ModelAttribute("inp") User inp , Model model)
+public String forgotPasswordResponse(@ModelAttribute("inp") User inp , Model model)
 {
 	
-	model.addAttribute("answer",refImpl.forgetPasswordReplyImplementation(inp,usersrepository));
+	model.addAttribute("answer",refImpl.forgetPasswordResponseImplementation(inp,usersrepository));
 	return "forgotreply";
 
 }

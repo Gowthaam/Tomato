@@ -7,6 +7,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+/**
+ * This entity class is a model for the reviews table that consists of all the reviews
+ * given by the users to various restaurants.
+ * @author gowtham
+ *
+ */
 
 @Entity
 @Table(name="reviews")

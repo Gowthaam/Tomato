@@ -7,6 +7,11 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
+/**
+ * This class sets the configuration of the spring security
+ * @author gowtham
+ *
+ */
 @Configuration
 @EnableWebSecurity
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter{
@@ -14,7 +19,11 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter{
 	 static final String LOGIN="/login";
 	@Autowired 
 	CustomAuth custauth;
-	
+	/**
+	 * This function overrides the default spring security configure method
+	 * It makes use of Custom authentication class and inMemoryAuthentication 
+	 * for providing the security.
+	 */
 	@Override
 	public void configure (AuthenticationManagerBuilder auth) throws Exception
 	{
@@ -27,6 +36,9 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter{
 		
 	}
 	
+	/**
+	 * It configures the authorization of access of various resources.
+	 */
 	 @Override
 	    protected void configure(HttpSecurity http) throws Exception {
 	      http.csrf().disable();   

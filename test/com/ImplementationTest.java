@@ -13,6 +13,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import com.jspmodel.OrderDetailsJSP;
 import com.model.User;
 import com.repository.UsersRepository;
 
@@ -49,7 +50,7 @@ public void forgotReplyTest()
 {
 	User u = new User();
 	u.setUname("keerthan");
-	assertEquals("Hi"+u.getUname().toUpperCase()+"! Password has been sent to your registered Mail.",logic.forgetPasswordReplyImplementation(u,usersrepository));
+	assertEquals("Hi"+u.getUname().toUpperCase()+"! Password has been sent to your registered Mail.",logic.forgetPasswordResponseImplementation(u,usersrepository));
 }
 
 @Test	
@@ -57,7 +58,7 @@ public void forgotReplyTestFail()
 {
 	User u = new User();
 	u.setUname("rajesh");
-	assertEquals("Username not found ! Please Register",logic.forgetPasswordReplyImplementation(u,usersrepository));
+	assertEquals("Username not found ! Please Register",logic.forgetPasswordResponseImplementation(u,usersrepository));
 }
 
 @Test	
@@ -72,7 +73,7 @@ public void addUserTestFail()
 @Test	
 public void addItemBillTest()
 {
-	OrderDetails od = new OrderDetails();
+	OrderDetailsJSP od = new OrderDetailsJSP();
 	od.setItem("pizza");
 	od.setPrice(200);
 	od.setQuantity(5);
@@ -83,7 +84,7 @@ public void addItemBillTest()
 @Test	
 public void removeItemBillTest()
 {
-	OrderDetails od = new OrderDetails();
+	OrderDetailsJSP od = new OrderDetailsJSP();
 	od.setItem("pizza");
 	od.setPrice(200);
 	od.setQuantity(5);
@@ -97,13 +98,13 @@ public void removeItemBillTest()
 @Test	
 public void addItemCartTest()
 {
-	OrderDetails od = new OrderDetails();
+	OrderDetailsJSP od = new OrderDetailsJSP();
 	od.setItem("pizza");
 	od.setPrice(200);
 	od.setQuantity(5);
 	app.addItemImplementation(od);
 
-	for(OrderDetails o : app.order.get("ohris") )
+	for(OrderDetailsJSP o : app.order.get("ohris") )
 		{assertEquals(o.item,"pizza");
 		assertEquals(o.quantity,5);
 		assertEquals(o.price,200);
@@ -114,7 +115,7 @@ public void addItemCartTest()
 @Test	
 public void removeItemCartTest()
 {
-	OrderDetails od = new OrderDetails();
+	OrderDetailsJSP od = new OrderDetailsJSP();
 	od.setItem("pizza");
 	od.setPrice(200);
 	od.setQuantity(5);

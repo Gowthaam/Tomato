@@ -7,7 +7,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-
+/**
+ * This entity class is a model for orders table that consist of orders placed by
+ * the users in various restaurants,their prices and quantity.
+ * @author gowtham
+ *
+ */
 @Entity
 @Table(name="orders")
 public class Order {
